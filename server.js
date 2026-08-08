@@ -571,6 +571,10 @@ app.put('/api/admin/users/:contact/suspend', async (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('<h1>🚀 Server Backend SuruhAja Online & Siap Digunakan!</h1>');
+});
+
 app.listen(PORT, async () => {
   await initDb();
   console.log(`🚀 Server Backend SuruhAja berjalan di http://localhost:${PORT}`);
