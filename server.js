@@ -10,23 +10,16 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
-// PostgreSQL Connection Pool
+// PostgreSQL Connection Pool Supabase (Port 6543)
+const supabaseConnectionString = 
+  process.env.DATABASE_URL || 
+  "postgresql://postgres.dcywunwkvwzorwpescnm:%40Srilestari201313%40@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres";
+
 const pool = new Pool({
-  // Gunakan DATABASE_URL jika ada (misal dari .env atau cloud hosting), 
-  // Jika tidak ada, gunakan URI localhost sebagai fallback
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:201313@localhost:5432/suruhaja_db',
-
-  // Pengaturan SSL untuk cloud hosting (seperti Render/Supabase)
-  ssl: process.env.DATABASE_URL && process.env.DATABASE_URL.includes('render.com') 
-    ? { rejectUnauthorized: false } 
-    : false,
-
-  // Fallback parameter terpisah jika connectionString tidak terdeteksi
-  user: process.env.PGUSER || 'postgres',
-  host: process.env.PGHOST || 'localhost',
-  database: process.env.PGDATABASE || 'suruhaja_db',
-  password: process.env.PGPASSWORD || '201313',
-  port: process.env.PGPORT || 5432,
+  connectionString: supabaseConnectionString,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 const initDb = async () => {
